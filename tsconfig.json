@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "target": "es5",
+    "outDir": "build",
+    "module": "commonjs",
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": false,
+    "incremental": true,
+    "strictNullChecks": true,
+    "lib": ["es2015", "dom"]
+  },
+  "include": [
+    "src/**/*.ts"
+  ]
+}
