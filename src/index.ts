@@ -9,10 +9,6 @@ const TICK_MILLIS = 1000 / 60;
 
 const canvas = document.getElementById('game-canvas') as HTMLCanvasElement;
 
-initSounds();
-initInputs( canvas );
-initRenderer( canvas );
-
 let prevState: GameState = GameState.createNew();
 let curState: GameState = GameState.createNew();
 
@@ -49,7 +45,11 @@ const frame = () =>
 
 const main = async () =>
 {
+    initSounds();
+    initInputs( canvas );
+    initRenderer( canvas );
     await loadAllImages();
+
     frame();
 };
 
