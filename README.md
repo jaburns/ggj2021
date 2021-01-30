@@ -2,7 +2,8 @@
 
 #### Project setup:
  - Install node.js
- - From a terminal run:
+ - Clone this repo and navigate to it in a terminal
+ - Run:
  ```
  npm install
  npm start
