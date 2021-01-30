@@ -2,12 +2,14 @@ import { initRenderer, render } from "./render";
 import { GameState } from "./state";
 import { cloneDeep } from 'lodash';
 import { initInputs, sampleInputs } from "./inputs";
-import { loadAllImages } from "./assets";
+import { initSounds } from './sounds';
+import { loadAllImages } from "./images";
 
 const TICK_MILLIS = 1000 / 60;
 
 const canvas = document.getElementById('game-canvas') as HTMLCanvasElement;
 
+initSounds();
 initInputs( canvas );
 initRenderer( canvas );
 
