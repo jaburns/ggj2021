@@ -1,46 +1,37 @@
 import { IMAGES } from "./images";
-import { GameState } from "./state";
-import { vec2 } from 'gl-matrix';
-import { Diver } from "./diver";
-import { GameObject } from "./gameobject";
+import { GameState, GameObject } from "./state";
 
 let ctx: CanvasRenderingContext2D;
-
-let rotationframe: number = 0;
-
-let objects: any[] = []; // holds game objects to be rendered
-
-let diver = new Diver();
-let boat = new GameObject();
 
 export const initRenderer = ( canvas: HTMLCanvasElement ): void =>
 {
     ctx = canvas.getContext('2d')!;
-
-    diver.sprite = IMAGES['DiverSprite1.png'];
-    diver.scale = 0.20;
-
-    boat.sprite = IMAGES['Boat.png'];
-    boat.scale = 0.25;
-
-    objects.push(diver);
-    objects.push(boat);
 };
 
-export const render = ( state0: GameState, state1: GameState, lerpTime: number ): void =>
+export const render = ( state: GameState ): void =>
 {
-    rotationframe += 0.01;
     ctx.clearRect( 0, 0, 1280, 720 );
 
-    const lerpPlayerPos = vec2.lerp( vec2.create(), state0.playerPos, state1.playerPos, lerpTime );
+    renderGameObject( state.diver.gameObject );
+};
 
-    diver.rotation =  rotationframe;
-    diver.position = lerpPlayerPos
+const renderGameObject = ( go: GameObject ): void =>
+{
+    const sprite = IMAGES[go.spriteName];
 
+    let cx = sprite.width / 2;
+    let cy = sprite.height / 2;
+    let cos = Math.cos(go.rotation), sin = Math.sin(go.rotation);
 
-    // render the objects
-    objects.map((o) => {
-        o.render(ctx);
-    });
+    ctx.setTransform(
+        go.scale * cos,
+        go.scale * sin,
+        go.scale * -sin,
+        go.scale * cos,
+        go.position[0],
+        go.position[1]
+    );
 
+    ctx.drawImage(sprite, -cx, -cy, sprite.width, sprite.height);
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
 };

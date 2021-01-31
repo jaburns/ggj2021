@@ -38,9 +38,8 @@ const frame = () =>
     {
         tickAccMillis -= TICK_MILLIS;
         tick();
+        render( curState );
     }
-
-    render( prevState, curState, tickAccMillis / TICK_MILLIS );
 };
 
 const main = async () =>
