@@ -185,6 +185,9 @@ canvas.onmouseup = e =>
 
 document.onkeydown = e =>
 {
+	if( keys.has(e.code))
+		return;
+
 	keys.add(e.code);
 
 	if( e.code === 'ArrowLeft' )
