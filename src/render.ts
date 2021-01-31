@@ -1,5 +1,6 @@
 import { IMAGES } from "./images";
 import { GameState, GameObject } from "./state";
+import { Const } from './utils';
 
 let ctx: CanvasRenderingContext2D;
 
@@ -8,14 +9,14 @@ export const initRenderer = ( canvas: HTMLCanvasElement ): void =>
     ctx = canvas.getContext('2d')!;
 };
 
-export const render = ( state: GameState ): void =>
+export const render = ( state: Const<GameState> ): void =>
 {
     ctx.clearRect( 0, 0, 1280, 720 );
 
     renderGameObject( state.diver.gameObject );
 };
 
-const renderGameObject = ( go: GameObject ): void =>
+const renderGameObject = ( go: Const<GameObject> ): void =>
 {
     const sprite = IMAGES[go.spriteName];
 

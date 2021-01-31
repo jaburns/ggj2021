@@ -1,6 +1,7 @@
 import { vec2 } from 'gl-matrix';
 import { InputState } from './inputs';
 import { SOUNDS } from './sounds';
+import { Const } from './utils';
 
 export type GameObject =
 {
@@ -32,7 +33,7 @@ export const DiverState =
         };
     },
 
-    step(self: DiverState, inputs: InputState)
+    step(self: DiverState, inputs: Const<InputState>)
     {
         self.gameObject.position[0] = inputs.mousePos[0];
         self.gameObject.position[1] = inputs.mousePos[1];
@@ -57,7 +58,8 @@ export const GameState =
         };
     },
 
-    step( self: GameState, inputs: InputState ): void
+
+    step( self: GameState, inputs: Const<InputState> ): void
     {
         self.tick++;
 
