@@ -23,6 +23,19 @@ export type DiverState =
     // extra diver-only state
 };
 
+export type BoatState =
+{
+    gameObject: GameObject,
+};
+
+
+export type GameState =
+{
+    tick: number,
+    boat: BoatState,
+    diver: DiverState
+};
+
 export const DiverState =
 {
     create(): DiverState
@@ -42,11 +55,11 @@ export const DiverState =
     step(self: DiverState, inputs: Const<InputState>)
     {
         if(self.gameObject.position[0] < inputs.mousePos[0] - 4) {
-            self.gameObject.velocity[0] = 2;
+            self.gameObject.velocity[0] = 3;
             self.gameObject.flip = false;
         }
         else if (self.gameObject.position[0] > inputs.mousePos[0] + 4) {
-            self.gameObject.velocity[0] = -2;
+            self.gameObject.velocity[0] = -3;
             self.gameObject.flip = true;
         }
         else {
@@ -54,11 +67,11 @@ export const DiverState =
         }
 
         if(inputs.mouseDown == false) {
-            if(self.gameObject.velocity[1] > -1)
+            if(self.gameObject.velocity[1] > -3)
                 self.gameObject.velocity[1] -= 0.1;
         }
         else {
-            if(self.gameObject.velocity[1] < 1)
+            if(self.gameObject.velocity[1] < 3)
                 self.gameObject.velocity[1] += 0.1;
         }
 
@@ -81,11 +94,31 @@ export const DiverState =
     }
 };
 
-export type GameState =
-{
-    tick: number,
-    diver: DiverState,
+export const BoatState = {
+
+    create(): BoatState
+    {
+        return {
+            gameObject: {
+                position: vec2.create(),
+                velocity: vec2.create(),
+                rotation: 0,
+                scale: 0.2,
+                flip: false,
+                spriteName: 'Boat.png',
+            }
+        };
+    },
+    step(self: BoatState, inputs: Const<InputState>)
+    {
+        self.gameObject.position[0] = 300;
+        self.gameObject.position[1] = 50;
+        self.gameObject.rotation = Math.sin(performance.now() / 1000.0) / 10.0;
+    }
 };
+
+
+
 
 export const GameState =
 {
@@ -94,6 +127,7 @@ export const GameState =
         return {
             tick: 0,
             diver: DiverState.create(),
+            boat: BoatState.create()
         };
     },
 
@@ -106,5 +140,6 @@ export const GameState =
             SOUNDS['music.mp3'].play();
 
         DiverState.step( self.diver, inputs );
+        BoatState.step( self.boat, inputs );
     }
 };

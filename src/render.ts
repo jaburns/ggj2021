@@ -12,8 +12,11 @@ export const initRenderer = ( canvas: HTMLCanvasElement ): void =>
 export const render = ( state: Const<GameState> ): void =>
 {
     ctx.clearRect( 0, 0, 1280, 720 );
+    ctx.fillStyle = "Blue"
+    ctx.fillRect(0, 0, 1280, 720);
 
     renderGameObject( state.diver.gameObject );
+    renderGameObject( state.boat.gameObject );
 };
 
 const renderGameObject = ( go: Const<GameObject> ): void =>
