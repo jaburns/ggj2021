@@ -7,13 +7,21 @@ let ctx: CanvasRenderingContext2D;
 let frame: number = 0;
 
 function drawSprite(sprite: HTMLImageElement, x: number , y:number, scale: number = 1, rotation: number = 0) {
-    ctx.save();
+    let cx = sprite.width/2;
+    let cy = sprite.height/2;
+    let cos = Math.cos(rotation), sin = Math.sin(rotation);
 
-    ctx.scale(scale, scale);
-    ctx.rotate(rotation);
-    ctx.translate(x, y);
-    ctx.drawImage( sprite, 0, 0);
-    ctx.restore();
+    ctx.setTransform(
+        scale * cos,
+        scale * sin,
+        scale * -sin,
+        scale * cos,
+        x,
+        y
+    );
+
+    ctx.drawImage(sprite, -cx, -cy, sprite.width, sprite.height)
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
 }
 
 export const initRenderer = ( canvas: HTMLCanvasElement ): void =>
@@ -31,7 +39,7 @@ export const render = ( state0: GameState, state1: GameState, lerpTime: number )
 
     const lerpPlayerPos = vec2.lerp( vec2.create(), state0.playerPos, state1.playerPos, lerpTime );
 
-    drawSprite(sprite, lerpPlayerPos[0], lerpPlayerPos[1], 1);
+    drawSprite(sprite, lerpPlayerPos[0], lerpPlayerPos[1], 1, frame);
     drawSprite(boat, 640, 0, 0.25, frame);
     drawSprite(diver, 120, 0, 0.25, frame);
     frame += 0.01;
