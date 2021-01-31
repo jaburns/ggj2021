@@ -11,14 +11,17 @@ export const initRenderer = ( canvas: HTMLCanvasElement ): void =>
 
 export const render = ( state: Const<GameState> ): void =>
 {
+    // Set the background to something ocean like
     ctx.clearRect( 0, 0, 1280, 720 );
     ctx.fillStyle = "Blue"
     ctx.fillRect(0, 0, 1280, 720);
 
+    // render the game objects in specific order
     renderGameObject( state.diver.gameObject );
     renderGameObject( state.boat.gameObject );
 };
 
+// Here we draw each game object to the canvas
 const renderGameObject = ( go: Const<GameObject> ): void =>
 {
     const sprite = IMAGES[go.spriteName];
@@ -43,5 +46,7 @@ const renderGameObject = ( go: Const<GameObject> ): void =>
     );
 
     ctx.drawImage(sprite, -cx, -cy, sprite.width, sprite.height);
+    // Important to restore the transform matrix before leaving.
+    // Kind of like push and pop in opengl
     ctx.setTransform(1, 0, 0, 1, 0, 0);
 };
