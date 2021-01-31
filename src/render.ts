@@ -24,10 +24,16 @@ const renderGameObject = ( go: Const<GameObject> ): void =>
     let cy = sprite.height / 2;
     let cos = Math.cos(go.rotation), sin = Math.sin(go.rotation);
 
+    let flip = 1;
+    if(go.flip == true) {
+        flip = -1;
+    }
+
+    // rotate, translate, scale, and flip across x axis
     ctx.setTransform(
-        go.scale * cos,
+        go.scale * cos * flip,
         go.scale * sin,
-        go.scale * -sin,
+        go.scale * -sin * flip,
         go.scale * cos,
         go.position[0],
         go.position[1]
