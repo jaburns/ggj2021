@@ -1,11 +1,13 @@
 import { vec2 } from 'gl-matrix';
 import { InputState } from './inputs';
+import { LevelDef } from './levels';
 import { SOUNDS } from './sounds';
 
 export type GameState =
 {
     tick: number,
     playerPos: vec2,
+    level: LevelDef,
 };
 
 export const GameState =
@@ -15,6 +17,7 @@ export const GameState =
         return {
             tick: 0,
             playerPos: vec2.create(),
+            level: LevelDef.create(),
         };
     },
 

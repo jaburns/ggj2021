@@ -4,6 +4,11 @@ const IMAGE_FILES = [
     'floor__.png',
 ];
 
+for( let i = 1; i <= 18; ++i )
+    IMAGE_FILES.push( 'Coral'+ i +'.png' );
+for( let i = 1; i <= 5; ++i )
+    IMAGE_FILES.push( 'Treasure'+ i +'.png' );
+
 export const IMAGES: Record<string, HTMLImageElement> = {};
 
 const loadImage = ( filename: string ): Promise<void> =>
