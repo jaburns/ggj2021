@@ -1,5 +1,7 @@
 const IMAGE_FILES = [
     'sprite.png',
+    'bg__.png',
+    'floor__.png',
 ];
 
 export const IMAGES: Record<string, HTMLImageElement> = {};

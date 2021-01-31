@@ -4,6 +4,7 @@ import { cloneDeep } from 'lodash';
 import { initInputs, sampleInputs } from "./inputs";
 import { initSounds } from './sounds';
 import { loadAllImages } from "./images";
+import { main as editorMain } from './editor';
 
 const TICK_MILLIS = 1000 / 60;
 
@@ -45,6 +46,13 @@ const frame = () =>
 
 const main = async () =>
 {
+    if( window.location.href.indexOf('editor') >= 0 )
+    {
+        await loadAllImages();
+        editorMain();
+        return;
+    }
+
     initSounds();
     initInputs( canvas );
     initRenderer( canvas );

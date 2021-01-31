@@ -25,7 +25,7 @@ export const GameState =
         if( self.tick === 1 )
             SOUNDS['music.mp3'].play();
 
-        self.playerPos[0] = inputs.mousePos[0] + 10 * Math.random();
-        self.playerPos[1] = inputs.mousePos[1] + 10 * Math.random();
+        self.playerPos[0] = inputs.mousePos[0] + 50 * Math.random();
+        self.playerPos[1] = inputs.mousePos[1] + 50 * Math.random();
     }
 };
