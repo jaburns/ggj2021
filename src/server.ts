@@ -1,7 +1,7 @@
 import { createServer } from 'http';
 import { Server as StaticServer } from 'node-static';
 
-const fileServer = new StaticServer( './public' );
+const fileServer = new StaticServer( './public', { cache: 0 });
 const httpServer = createServer( fileServer.serve.bind( fileServer ));
 const HTTP_PORT = 8080;
 
