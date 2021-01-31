@@ -21,3 +21,4 @@
  - To place coral, hold the `1` key and click
  - To place treasure, hold the `2` key and click
  - Hold ctrl and click to delete polygons or objects
+ - Press space to save the map by copying the map data to the clipboard
