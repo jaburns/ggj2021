@@ -45,6 +45,27 @@ const getClosestPolyIndexToMousePos = (): number | null =>
 	return result;
 };
 
+const getClosestObjectIndexToMousePos = (): number | null =>
+{
+	let minD2 = Infinity;
+	let result: number | null = null;
+
+	for( let j = 0; j < level.objects.length; ++j )
+	{
+		const d2 = vec2.squaredDistance( level.objects[j].pos, mousePos );
+		if( d2 < minD2 )
+		{
+			result = j;
+			minD2 = d2;
+		}
+	}
+
+	if( Math.sqrt( minD2 ) > 20 )
+		result = null;
+
+	return result;
+};
+
 const getClosestNodeToMousePos = (): vec2 | null =>
 {
 	let minD2 = Infinity;
@@ -109,9 +130,18 @@ canvas.onmousedown = e =>
 	}
 	else if( keys.has('ControlLeft'))
 	{
-		const idx = getClosestPolyIndexToMousePos()
+		const idx = getClosestPolyIndexToMousePos();
 		if( idx !== null )
+		{
 			level.polys.splice( idx, 1 );
+			return;
+		}
+		const idx0 = getClosestObjectIndexToMousePos();
+		if( idx !== null )
+		{
+			level.objects.splice( idx, 1 );
+			return;
+		}
 	}
 	else if( curPoly !== null )
 	{
