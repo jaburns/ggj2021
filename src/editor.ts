@@ -137,9 +137,9 @@ canvas.onmousedown = e =>
 			return;
 		}
 		const idx0 = getClosestObjectIndexToMousePos();
-		if( idx !== null )
+		if( idx0 !== null )
 		{
-			level.objects.splice( idx, 1 );
+			level.objects.splice( idx0, 1 );
 			return;
 		}
 	}
