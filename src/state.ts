@@ -2,12 +2,53 @@ import { vec2 } from 'gl-matrix';
 import { InputState } from './inputs';
 import { LevelDef } from './levels';
 import { SOUNDS } from './sounds';
+import { Const } from './utils';
+
+export type GameObject =
+{
+    position: vec2,
+    velocity: vec2,
+    rotation: number,
+    scale: number,
+    spriteName: string,
+};
+
+export type DiverState = 
+{
+    gameObject: GameObject,
+    // extra diver-only state
+};
+
+export const DiverState =
+{
+    create(): DiverState
+    {
+        return {
+            gameObject: {
+                position: vec2.create(),
+                velocity: vec2.create(),
+                rotation: 0,
+                scale: 0.25,
+                spriteName: 'DiverSprite1.png',
+            }
+        };
+    },
+
+    step(self: DiverState, inputs: Const<InputState>)
+    {
+        self.gameObject.position[0] = inputs.mousePos[0];
+        self.gameObject.position[1] = inputs.mousePos[1];
+
+        self.gameObject.rotation += 0.1;
+    }
+};
 
 export type GameState =
 {
     tick: number,
     playerPos: vec2,
     level: LevelDef,
+    diver: DiverState,
 };
 
 export const GameState =
@@ -18,17 +59,18 @@ export const GameState =
             tick: 0,
             playerPos: vec2.create(),
             level: LevelDef.create(),
+            diver: DiverState.create(),
         };
     },
 
-    step( self: GameState, inputs: InputState ): void
+
+    step( self: GameState, inputs: Const<InputState> ): void
     {
         self.tick++;
 
         if( self.tick === 1 )
             SOUNDS['music.mp3'].play();
 
-        self.playerPos[0] = inputs.mousePos[0] + 50 * Math.random();
-        self.playerPos[1] = inputs.mousePos[1] + 50 * Math.random();
+        DiverState.step( self.diver, inputs );
     }
 };

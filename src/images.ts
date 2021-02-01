@@ -2,6 +2,8 @@ const IMAGE_FILES = [
     'sprite.png',
     'bg__.png',
     'floor__.png',
+    'Boat.png',
+    'DiverSprite1.png'
 ];
 
 for( let i = 1; i <= 18; ++i )
