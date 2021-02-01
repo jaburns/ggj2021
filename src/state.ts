@@ -1,6 +1,6 @@
 import { vec2 } from 'gl-matrix';
 import { InputState } from './inputs';
-import { LevelDef, THE_LEVEL } from './levels';
+import { LevelDef, LEVEL_STRINGS } from './levels';
 import { SOUNDS } from './sounds';
 import { Const } from './utils';
 
@@ -135,7 +135,7 @@ export const GameState =
         return {
             tick: 0,
             cameraPos: vec2.create(),
-            level: LevelDef.load( THE_LEVEL ),
+            level: LevelDef.load( LEVEL_STRINGS[0] ),
             diver: DiverState.create(),
             boat: BoatState.create()
         };
