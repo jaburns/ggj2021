@@ -155,7 +155,7 @@ export const GameState =
         return {
             tick: 0,
             cameraPos: vec2.create(),
-            level: LevelDef.load( LEVEL_STRINGS[0] ),
+            level: LevelDef.load( LEVEL_STRINGS[1] ),
             diver: DiverState.create(),
             boat: BoatState.create(),
             collectedTreasure: []
