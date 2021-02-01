@@ -1,6 +1,6 @@
 import { vec2 } from 'gl-matrix';
 import { InputState } from './inputs';
-import { LevelDef, LEVEL_STRINGS } from './levels';
+import { LevelObject, LevelDef, LEVEL_STRINGS } from './levels';
 import { SOUNDS } from './sounds';
 import { Const } from './utils';
 
@@ -30,14 +30,14 @@ export type BoatState =
     gameObject: GameObject,
 };
 
-
 export type GameState =
 {
     tick: number,
     cameraPos: vec2,
     level: LevelDef,
     boat: BoatState,
-    diver: DiverState
+    diver: DiverState,
+    collectedTreasure: GameObject[],
 };
 
 export const DiverState =
@@ -57,7 +57,7 @@ export const DiverState =
         };
     },
 
-    step(self: DiverState, inputs: Const<InputState>, camera: Const<vec2>, level: Const<LevelDef>)
+    step(self: DiverState, inputs: Const<InputState>, camera: Const<vec2>, level: LevelDef, outTreasure: GameObject[])
     {
         self.gameObject.spriteName = 'DiverSprite'+((((self.kickAnim/10)|0)%2)+1)+'.png';
 
@@ -88,6 +88,21 @@ export const DiverState =
 
         const collision = LevelDef.collide( level, self.gameObject.position, 50 );
         vec2.copy( self.gameObject.position, collision.restoredPos );
+
+
+        collision.touchedObjects.forEach( x => {
+            if( x.kind === 'treasure' ) {
+                const obj = level.objects.splice( level.objects.indexOf(x as LevelObject), 1 )[0];
+                outTreasure.push({
+                    flip: false,
+                    position: obj.pos as vec2,
+                    velocity: vec2.create(),
+                    rotation: 0,
+                    scale: 1,
+                    spriteName: x.image,
+                });
+            }
+        });
 
         if(self.gameObject.position[1] < 650)
         {
@@ -140,7 +155,8 @@ export const GameState =
             cameraPos: vec2.create(),
             level: LevelDef.load( LEVEL_STRINGS[0] ),
             diver: DiverState.create(),
-            boat: BoatState.create()
+            boat: BoatState.create(),
+            collectedTreasure: []
         };
     },
 
@@ -168,7 +184,21 @@ export const GameState =
             self.cameraPos[0] = 1110;
 
 
-        DiverState.step( self.diver, inputs, self.cameraPos, self.level );
+        DiverState.step( self.diver, inputs, self.cameraPos, self.level, self.collectedTreasure );
         BoatState.step( self.boat, inputs );
+
+        for( let i = self.collectedTreasure.length - 1; i >= 0; --i )
+        {
+            const x = self.collectedTreasure[i];
+            const dir = vec2.sub( vec2.create(), self.diver.gameObject.position, x.position );
+            vec2.normalize( dir, dir );
+            vec2.scale( dir, dir, 0.1 );
+            vec2.add( x.velocity, x.velocity, dir );
+            vec2.add( x.position, x.position, x.velocity );
+
+            if( x.position[1] < 360 )
+                self.collectedTreasure.splice( i, 1 );
+        }
+
     }
 };
