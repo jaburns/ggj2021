@@ -168,5 +168,8 @@ export const drawLevel = ( ctx: CanvasRenderingContext2D, camera: Const<vec2>, l
             }
             ctx.restore();
         }
+
+        ctx.drawImage( IMAGES['WaterOverlay.png'], outlines ? -camera[0] : 0, -camera[1] );
+        ctx.drawImage( IMAGES['WavesWaterTop.png'], outlines ? -camera[0] : 0, -camera[1] );
     }
 };

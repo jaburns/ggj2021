@@ -3,7 +3,9 @@ const IMAGE_FILES = [
     'bg__.png',
     'floor__.png',
     'Boat.png',
-    'DiverSprite1.png'
+    'DiverSprite1.png',
+    'WaterOverlay.png',
+    'WavesWaterTop.png',
 ];
 
 for( let i = 1; i <= 18; ++i )
