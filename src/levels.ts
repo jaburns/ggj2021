@@ -89,7 +89,7 @@ export const LevelDef =
             const w =IMAGES[obj.image].width;
             const h = IMAGES[obj.image].height;
             const op = vec2.fromValues( obj.pos[0] + w/2, obj.pos[1] + h/2 );
-            const or = (w + h) / 2;
+            const or = (w + h) / 2 + radius;
             if( vec2.squaredDistance( op, pos ) < or*or )
                 result.touchedObjects.push( obj );
         }
