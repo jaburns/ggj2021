@@ -11,7 +11,7 @@ export type LevelPoly =
 
 export const LevelPoly =
 {
-    create(): LevelPoly 
+    create(): LevelPoly
     {
         return {
             points: [],
@@ -34,7 +34,7 @@ export type LevelDef =
 
 export const LevelDef =
 {
-    create(): LevelDef 
+    create(): LevelDef
     {
         return {
             polys: [],
@@ -58,7 +58,7 @@ export const drawLevel = ( ctx: CanvasRenderingContext2D, camera: Const<vec2>, l
     if( pass === 0 )
     {
         ctx.clearRect( 0, 0, 1280, 720 );
-        ctx.drawImage( IMAGES['bg__.png'], -camera[0], -camera[1] );
+        ctx.drawImage( IMAGES['bg__.png'], 0, -camera[1] );
 
         if( outlines )
             ctx.strokeStyle = '#ff0';

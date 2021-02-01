@@ -81,9 +81,9 @@ export const DiverState =
         self.gameObject.position[0] += self.gameObject.velocity[0];
         self.gameObject.position[1] += self.gameObject.velocity[1];
 
-        if(self.gameObject.position[1] < 100)
+        if(self.gameObject.position[1] < 650)
         {
-            self.gameObject.position[1] = 100;
+            self.gameObject.position[1] = 650;
             self.gameObject.velocity[1] = 0
         }
 
@@ -115,7 +115,7 @@ export const BoatState = {
     step(self: BoatState, inputs: Const<InputState>)
     {
         self.gameObject.position[0] = 300;
-        self.gameObject.position[1] = 50;
+        self.gameObject.position[1] = 575;
         self.gameObject.rotation = Math.sin(performance.now() / 1000.0) / 10.0;
     }
 };
@@ -144,7 +144,16 @@ export const GameState =
         if( self.tick === 1 )
             SOUNDS['music.mp3'].play();
 
-        self.cameraPos[1] += 2;
+        if(self.diver.gameObject.position[0] - self.cameraPos[0] > (1280 - 400))
+            self.cameraPos[0] += 2;
+        if(self.diver.gameObject.position[0] - self.cameraPos[0] < 400)
+            self.cameraPos[0] -= 2;
+
+        if(self.diver.gameObject.position[1] - self.cameraPos[1] > (780 - 400))
+            self.cameraPos[1] += 1.5;
+        if(self.diver.gameObject.position[1] - self.cameraPos[1] < 200)
+            self.cameraPos[1] -= 3;
+
 
         DiverState.step( self.diver, inputs );
         BoatState.step( self.boat, inputs );

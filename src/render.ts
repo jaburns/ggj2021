@@ -2,6 +2,7 @@ import { IMAGES } from "./images";
 import { drawLevel } from "./levels";
 import { GameState, GameObject } from "./state";
 import { Const } from './utils';
+import { vec2 } from 'gl-matrix';
 
 let ctx: CanvasRenderingContext2D;
 
@@ -16,18 +17,20 @@ export const render = ( state: Const<GameState> ): void =>
     ctx.clearRect( 0, 0, 1280, 720 );
     ctx.fillStyle = "Blue"
     ctx.fillRect(0, 0, 1280, 720);
+    ctx.save();
 
     drawLevel( ctx, state.cameraPos, state.level, false, 0 );
 
     // render the game objects in specific order
-    renderGameObject( state.diver.gameObject );
-    renderGameObject( state.boat.gameObject );
+    renderGameObject( state.diver.gameObject, state.cameraPos );
+    renderGameObject( state.boat.gameObject, state.cameraPos );
 
     drawLevel( ctx, state.cameraPos, state.level, false, 1 );
+    ctx.restore();
 };
 
 // Here we draw each game object to the canvas
-const renderGameObject = ( go: Const<GameObject> ): void =>
+const renderGameObject = ( go: Const<GameObject>, camera: Const<vec2>): void =>
 {
     const sprite = IMAGES[go.spriteName];
 
@@ -46,8 +49,8 @@ const renderGameObject = ( go: Const<GameObject> ): void =>
         go.scale * sin,
         go.scale * -sin * flip,
         go.scale * cos,
-        go.position[0],
-        go.position[1]
+        go.position[0] - camera[0],
+        go.position[1] - camera[1]
     );
 
     ctx.drawImage(sprite, -cx, -cy, sprite.width, sprite.height);
