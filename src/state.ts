@@ -57,7 +57,7 @@ export const DiverState =
         };
     },
 
-    step(self: DiverState, inputs: Const<InputState>, camera: Const<vec2>, tick: number)
+    step(self: DiverState, inputs: Const<InputState>, camera: Const<vec2>, level: Const<LevelDef>)
     {
         self.gameObject.spriteName = 'DiverSprite'+((((self.kickAnim/10)|0)%2)+1)+'.png';
 
@@ -85,6 +85,9 @@ export const DiverState =
 
         self.gameObject.position[0] += self.gameObject.velocity[0];
         self.gameObject.position[1] += self.gameObject.velocity[1];
+
+        const collision = LevelDef.collide( level, self.gameObject.position, 50 );
+        vec2.copy( self.gameObject.position, collision.restoredPos );
 
         if(self.gameObject.position[1] < 650)
         {
@@ -165,7 +168,7 @@ export const GameState =
             self.cameraPos[0] = 1110;
 
 
-        DiverState.step( self.diver, inputs, self.cameraPos, self.tick );
+        DiverState.step( self.diver, inputs, self.cameraPos, self.level );
         BoatState.step( self.boat, inputs );
     }
 };
