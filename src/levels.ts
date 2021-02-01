@@ -198,7 +198,7 @@ export const drawLevel = ( ctx: CanvasRenderingContext2D, camera: Const<vec2>, l
     // overlay section of drawing
     renderGUI('title.png', 700, -camera[1] / 1.3 + 255, 0, 1);
     renderGUI('O2Meter.png', 100, 100, 0, 0.1);
-    renderGUI('O2MeterDial.png', 100, 100, Math.sin(performance.now() / 400.0) * 2.5, 0.1);
+    renderGUI('O2MeterDial.png', 100, 100, Math.sin(performance.now() / 40000.0 + 1.57) * -2.5, 0.1);
     renderGUI('O2MeterLens.png', 100, 100, 0, 0.1);
 
 };
