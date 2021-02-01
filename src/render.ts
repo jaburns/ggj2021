@@ -25,6 +25,10 @@ export const render = ( state: Const<GameState> ): void =>
     renderGameObject( state.diver.gameObject, state.cameraPos );
     renderGameObject( state.boat.gameObject, state.cameraPos );
 
+    state.collectedTreasure.forEach( x => {
+        renderGameObject( x, state.cameraPos );
+    });
+
     drawLevel( ctx, state.cameraPos, state.level, false, 1 );
     ctx.restore();
 };
