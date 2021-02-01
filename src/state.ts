@@ -169,20 +169,22 @@ export const GameState =
         if( self.tick === 1 )
             SOUNDS['music.mp3'].play();
 
-        if(self.diver.gameObject.position[0] - self.cameraPos[0] > (1280 - 340))
-            self.cameraPos[0] += 2;
-        if(self.diver.gameObject.position[0] - self.cameraPos[0] < 340)
-            self.cameraPos[0] -= 2;
+        if(self.tick > 60 * 2) {
+            if(self.diver.gameObject.position[0] - self.cameraPos[0] > (1280 - 340))
+                self.cameraPos[0] += 2;
+            if(self.diver.gameObject.position[0] - self.cameraPos[0] < 340)
+                self.cameraPos[0] -= 2;
 
-        if(self.diver.gameObject.position[1] - self.cameraPos[1] > (780 - 400))
-            self.cameraPos[1] += 1.5;
-        if(self.diver.gameObject.position[1] - self.cameraPos[1] < 200)
-            self.cameraPos[1] -= 3;
+            if(self.diver.gameObject.position[1] - self.cameraPos[1] > (780 - 400))
+                self.cameraPos[1] += 1.5;
+            if(self.diver.gameObject.position[1] - self.cameraPos[1] < 200)
+                self.cameraPos[1] -= 3;
 
-        if(self.cameraPos[0] < 0)
-            self.cameraPos[0] = 0;
-        if(self.cameraPos[0] > 1110)
-            self.cameraPos[0] = 1110;
+            if(self.cameraPos[0] < 0)
+                self.cameraPos[0] = 0;
+            if(self.cameraPos[0] > 1110)
+                self.cameraPos[0] = 1110;
+        }
 
 
         DiverState.step( self.diver, inputs, self.cameraPos, self.level, self.collectedTreasure );
