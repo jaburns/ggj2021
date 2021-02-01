@@ -192,14 +192,16 @@ export const GameState =
         {
             const x = self.collectedTreasure[i];
             const dir = vec2.sub( vec2.create(), self.diver.gameObject.position, x.position );
+            let dist = vec2.distance( self.diver.gameObject.position, x.position );
             vec2.normalize( dir, dir );
-            vec2.scale( dir, dir, 0.1 );
+            vec2.scale( dir, dir, dist * 0.01 );
+
             vec2.add( x.velocity, x.velocity, dir );
             vec2.add( x.position, x.position, x.velocity );
 
-            if( x.position[1] < 360 )
+            // Collect/delete treasure when it reaches the surface
+            if( x.position[1] < 650 )
                 self.collectedTreasure.splice( i, 1 );
         }
-
     }
 };
