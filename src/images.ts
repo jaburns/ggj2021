@@ -11,6 +11,8 @@ const IMAGE_FILES = [
     'O2Meter.png',
     'O2MeterDial.png',
     'O2MeterLens.png',
+    'title.png',
+    'instructions.png'
 ];
 
 for( let i = 1; i <= 18; ++i )
