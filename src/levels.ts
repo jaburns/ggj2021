@@ -137,6 +137,9 @@ export const drawLevel = ( ctx: CanvasRenderingContext2D, camera: Const<vec2>, l
     {
         ctx.clearRect( 0, 0, 1280, 720 );
         ctx.drawImage( IMAGES['bg__.png'], outlines ? -camera[0] : 0, -camera[1] );
+    }
+    else if( pass === 1 )
+    {
 
         if( outlines )
             ctx.strokeStyle = '#ff0';
@@ -155,9 +158,7 @@ export const drawLevel = ( ctx: CanvasRenderingContext2D, camera: Const<vec2>, l
                 ctx.stroke();
             ctx.restore();
         }
-    }
-    else if( pass === 1 )
-    {
+
         for( const obj of level.objects )
         {
             ctx.save();
