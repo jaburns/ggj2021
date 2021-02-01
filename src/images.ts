@@ -4,6 +4,7 @@ const IMAGE_FILES = [
     'floor__.png',
     'Boat.png',
     'DiverSprite1.png',
+    'DiverSprite2.png',
     'WaterOverlay.png',
     'WavesWaterTop.png',
 ];
