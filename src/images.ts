@@ -6,6 +6,7 @@ const IMAGE_FILES = [
     'DiverSprite1.png',
     'WaterOverlay.png',
     'WavesWaterTop.png',
+    'beam.png'
 ];
 
 for( let i = 1; i <= 18; ++i )
