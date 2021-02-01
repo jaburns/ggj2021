@@ -55,13 +55,13 @@ export const DiverState =
         };
     },
 
-    step(self: DiverState, inputs: Const<InputState>)
+    step(self: DiverState, inputs: Const<InputState>, camera: Const<vec2>)
     {
-        if(self.gameObject.position[0] < inputs.mousePos[0] - 4) {
+        if(self.gameObject.position[0] < (inputs.mousePos[0] + camera[0]) - 8) {
             self.gameObject.velocity[0] = 3;
             self.gameObject.flip = false;
         }
-        else if (self.gameObject.position[0] > inputs.mousePos[0] + 4) {
+        else if (self.gameObject.position[0] > (inputs.mousePos[0] + camera[0]) + 8) {
             self.gameObject.velocity[0] = -3;
             self.gameObject.flip = true;
         }
@@ -144,9 +144,9 @@ export const GameState =
         if( self.tick === 1 )
             SOUNDS['music.mp3'].play();
 
-        if(self.diver.gameObject.position[0] - self.cameraPos[0] > (1280 - 400))
+        if(self.diver.gameObject.position[0] - self.cameraPos[0] > (1280 - 500))
             self.cameraPos[0] += 2;
-        if(self.diver.gameObject.position[0] - self.cameraPos[0] < 400)
+        if(self.diver.gameObject.position[0] - self.cameraPos[0] < 500)
             self.cameraPos[0] -= 2;
 
         if(self.diver.gameObject.position[1] - self.cameraPos[1] > (780 - 400))
@@ -154,8 +154,8 @@ export const GameState =
         if(self.diver.gameObject.position[1] - self.cameraPos[1] < 200)
             self.cameraPos[1] -= 3;
 
-
-        DiverState.step( self.diver, inputs );
+        console.log(self.diver.gameObject.position[0], inputs.mousePos[0])
+        DiverState.step( self.diver, inputs, self.cameraPos );
         BoatState.step( self.boat, inputs );
     }
 };
