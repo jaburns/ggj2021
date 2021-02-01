@@ -197,9 +197,8 @@ export const GameState =
             vec2.add( x.velocity, x.velocity, dir );
             vec2.add( x.position, x.position, x.velocity );
 
-            if( x.position[1] < 360 )
+            if( x.position[1] < 650 )
                 self.collectedTreasure.splice( i, 1 );
         }
-
     }
 };
