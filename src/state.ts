@@ -154,7 +154,12 @@ export const GameState =
         if(self.diver.gameObject.position[1] - self.cameraPos[1] < 200)
             self.cameraPos[1] -= 3;
 
+        if(self.cameraPos[0] < 0)
+            self.cameraPos[0] = 0;
+        if(self.cameraPos[0] > 1110)
+            self.cameraPos[0] = 1110;
 
+        console.log(self.cameraPos[0])
         DiverState.step( self.diver, inputs, self.cameraPos );
         BoatState.step( self.boat, inputs );
     }
