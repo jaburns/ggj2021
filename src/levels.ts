@@ -32,6 +32,13 @@ export type LevelDef =
     objects: LevelObject[],
 };
 
+export type CollisionResult =
+{
+    hit: boolean,
+    restoredPos: vec2,
+    touchedObjects: LevelObject[],
+};
+
 export const LevelDef =
 {
     create(): LevelDef
@@ -51,6 +58,26 @@ export const LevelDef =
     {
         return JSON.parse( atob( level )) as LevelDef;
     },
+
+    collide( level: Const<LevelDef>, pos: vec2, radius: number ): CollisionResult
+    {
+        const result: CollisionResult = {
+            hit: false,
+            restoredPos: vec2.create(),
+            touchedObjects: [],
+        };
+
+        for( const poly of level.polys )
+            for( let i = 0; i <= poly.points.length; ++i )
+                collideLine( pos, radius, poly.points[i] as vec2, poly.points[(i+1)%poly.points.length] as vec2, result );
+
+        return result;
+    },
+};
+
+const collideLine = ( pos: vec2, radius: number, a: vec2, b: vec2, out: CollisionResult ): void =>
+{
+
 };
 
 export const drawLevel = ( ctx: CanvasRenderingContext2D, camera: Const<vec2>, level: Const<LevelDef>, outlines: boolean, pass: number ): void =>
