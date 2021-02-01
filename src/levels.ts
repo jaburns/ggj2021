@@ -50,43 +50,48 @@ export const LevelDef =
     },
 };
 
-export const drawLevel = ( ctx: CanvasRenderingContext2D, camera: vec2, level: LevelDef, outlines: boolean ): void =>
+export const drawLevel = ( ctx: CanvasRenderingContext2D, camera: vec2, level: LevelDef, outlines: boolean, pass: number ): void =>
 {
-	ctx.clearRect( 0, 0, 1280, 720 );
-	ctx.drawImage( IMAGES['bg__.png'], -camera[0], -camera[1] );
-
-    if( outlines )
-        ctx.strokeStyle = '#ff0';
-
-	ctx.fillStyle = ctx.createPattern(IMAGES['floor__.png'], 'repeat')!;
-	for( const poly of level.polys )
-	{
-		if( poly.points.length < 3 )
-			poly.points.length = 0;
-
-		ctx.save();
-		ctx.translate(-camera[0], -camera[1]);
-		ctx.beginPath();
-		ctx.moveTo( poly.points[poly.points.length-1][0], poly.points[poly.points.length-1][1]);
-		for( let i = 0; i < poly.points.length; ++i )
-			ctx.lineTo( poly.points[i][0], poly.points[i][1]);
-        ctx.fill();
-        if( outlines )
-            ctx.stroke();
-		ctx.restore();
-    }
-    
-    for( const obj of level.objects )
+    if( pass === 0 )
     {
-        ctx.save();
-        ctx.translate(-camera[0], -camera[1]);
-        ctx.drawImage(IMAGES[obj.image], obj.pos[0], obj.pos[1]);
+        ctx.clearRect( 0, 0, 1280, 720 );
+        ctx.drawImage( IMAGES['bg__.png'], -camera[0], -camera[1] );
+
         if( outlines )
+            ctx.strokeStyle = '#ff0';
+
+        ctx.fillStyle = ctx.createPattern(IMAGES['floor__.png'], 'repeat')!;
+        for( const poly of level.polys )
         {
+            if( poly.points.length < 3 )
+                poly.points.length = 0;
+
+            ctx.save();
+            ctx.translate(-camera[0], -camera[1]);
             ctx.beginPath();
-            ctx.arc( obj.pos[0], obj.pos[1], 10, 0, 2*Math.PI );
-            ctx.stroke();
+            ctx.moveTo( poly.points[poly.points.length-1][0], poly.points[poly.points.length-1][1]);
+            for( let i = 0; i < poly.points.length; ++i )
+                ctx.lineTo( poly.points[i][0], poly.points[i][1]);
+            ctx.fill();
+            if( outlines )
+                ctx.stroke();
+            ctx.restore();
         }
-		ctx.restore();
+    }
+    else if( pass === 1 )
+    {
+        for( const obj of level.objects )
+        {
+            ctx.save();
+            ctx.translate(-camera[0], -camera[1]);
+            ctx.drawImage(IMAGES[obj.image], obj.pos[0], obj.pos[1]);
+            if( outlines )
+            {
+                ctx.beginPath();
+                ctx.arc( obj.pos[0], obj.pos[1], 10, 0, 2*Math.PI );
+                ctx.stroke();
+            }
+            ctx.restore();
+        }
     }
 };

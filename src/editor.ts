@@ -234,7 +234,8 @@ document.onkeyup = e =>
 
 const draw = () =>
 {
-	drawLevel( ctx, camera, level, true );
+	drawLevel( ctx, camera, level, true, 0 );
+	drawLevel( ctx, camera, level, true, 1 );
 
 	if( curPoly !== null && curPoly.points.length > 1 )
 	{
