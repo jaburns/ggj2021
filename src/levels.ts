@@ -68,16 +68,48 @@ export const LevelDef =
         };
 
         for( const poly of level.polys )
+        {
             for( let i = 0; i <= poly.points.length; ++i )
+            {
                 collideLine( pos, radius, poly.points[i] as vec2, poly.points[(i+1)%poly.points.length] as vec2, result );
+
+                if( result.hit )
+                    return result;
+            }
+        }
 
         return result;
     },
 };
 
-const collideLine = ( pos: vec2, radius: number, a: vec2, b: vec2, out: CollisionResult ): void =>
+const collideLine = ( p: vec2, radius: number, v: vec2, w: vec2, out: CollisionResult ): void =>
 {
+    function sqr(x: number) { return x * x }
+    function dist2(v: vec2, w: vec2) { return sqr(v[0] - w[0]) + sqr(v[1] - w[1]) }
 
+    var l2 = dist2(v, w);
+    var t = ((p[0] - v[0]) * (w[0] - v[0]) + (p[1] - v[1]) * (w[1] - v[1])) / l2;
+
+    let q = vec2.create();
+    if( t <= 0 ) q = v;
+    else if( t >= 1 ) q = w;
+    else {
+        t = Math.max(0, Math.min(1, t));
+        q[0] = v[0] + t * (w[0] - v[0]);
+        q[1] = v[1] + t * (w[1] - v[1]);
+    }
+
+    const d2 = dist2( p, q );
+    if( d2 <= radius * radius )
+    {
+        const a = vec2.sub( vec2.create(), p, q );
+        vec2.normalize( a, a );
+        vec2.add( a, a, q );
+
+        out.hit = true;
+        out.restoredPos = a;
+        out.touchedObjects = [];
+    }
 };
 
 export const drawLevel = ( ctx: CanvasRenderingContext2D, camera: Const<vec2>, level: Const<LevelDef>, outlines: boolean, pass: number ): void =>
