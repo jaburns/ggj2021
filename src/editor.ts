@@ -279,7 +279,7 @@ export const main = () =>
 	if( eqIdx >= 0 )
 	{
 		const map = window.location.href.substr( eqIdx + 1 );
-		level = LevelDef.load( map );
+		level = LevelDef.load( decodeURIComponent( map ));
 	}
 
 	frame();
