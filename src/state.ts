@@ -22,6 +22,7 @@ export type DiverState =
 {
     gameObject: GameObject,
     kickAnim: number,
+    oxygen: number,
     // extra diver-only state
 };
 
@@ -46,6 +47,7 @@ export const DiverState =
     {
         return {
             kickAnim: 0,
+            oxygen: 100.0,
             gameObject: {
                 position: vec2.create(),
                 velocity: vec2.create(),
@@ -143,7 +145,6 @@ export const GameState =
             boat: BoatState.create()
         };
     },
-
 
     step( self: GameState, inputs: Const<InputState> ): void
     {

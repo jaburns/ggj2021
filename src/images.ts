@@ -7,7 +7,10 @@ const IMAGE_FILES = [
     'DiverSprite2.png',
     'WaterOverlay.png',
     'WavesWaterTop.png',
-    'beam.png'
+    'beam.png',
+    'O2Meter.png',
+    'O2MeterDial.png',
+    'O2MeterLens.png',
 ];
 
 for( let i = 1; i <= 18; ++i )

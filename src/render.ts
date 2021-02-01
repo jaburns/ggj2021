@@ -60,3 +60,32 @@ const renderGameObject = ( go: Const<GameObject>, camera: Const<vec2>): void =>
     // Kind of like push and pop in opengl
     ctx.setTransform(1, 0, 0, 1, 0, 0);
 };
+
+export const renderGUI = ( spriteName: string, x: number, y:number, rotation:number, scale: number): void =>
+{
+    ctx.save();
+    const sprite = IMAGES[spriteName];
+
+    let cx = sprite.width / 2;
+    let cy = sprite.height / 2;
+    let cos = Math.cos(rotation), sin = Math.sin(rotation);
+
+
+    // rotate, translate, scale, and flip across x axis
+    ctx.setTransform(
+        scale * cos,
+        scale * sin,
+        scale * -sin,
+        scale * cos,
+        x,
+        y
+    );
+
+
+    ctx.drawImage(sprite, -cx, -cy, sprite.width, sprite.height);
+
+    // Important to restore the transform matrix before leaving.
+    // Kind of like push and pop in opengl
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.restore();
+};
