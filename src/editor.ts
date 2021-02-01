@@ -1,4 +1,5 @@
 import { vec2 } from "gl-matrix";
+import { createContext } from "vm";
 import { IMAGES } from "./images";
 import { drawLevel, LevelDef, LevelPoly } from "./levels";
 
@@ -265,6 +266,18 @@ const draw = () =>
 	ctx.drawImage(IMAGES['Coral' + curCoral + '.png'], 0, 0);
 	ctx.drawImage(IMAGES['Treasure' + curTreasure + '.png'], 1000, 0);
 	ctx.restore();
+
+	
+//	ctx.save();
+//	ctx.translate(-camera[0], -camera[1]);
+//	const zz = vec2.create();
+//	vec2.copy( zz, mousePos );
+//	const zx = LevelDef.collide( level, zz, 50 ).restoredPos;
+//	ctx.strokeStyle = '#f00';
+//	ctx.beginPath();
+//	ctx.arc( zx[0], zx[1], 50, 0, 2*Math.PI );
+//	ctx.stroke();
+//	ctx.restore();
 };
 
 const frame = () =>

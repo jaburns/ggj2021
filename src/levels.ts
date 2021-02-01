@@ -36,7 +36,7 @@ export type CollisionResult =
 {
     hit: boolean,
     restoredPos: vec2,
-    touchedObjects: LevelObject[],
+    touchedObjects: Const<LevelObject>[],
 };
 
 export const LevelDef =
@@ -63,26 +63,37 @@ export const LevelDef =
     {
         const result: CollisionResult = {
             hit: false,
-            restoredPos: vec2.create(),
+            restoredPos: vec2.clone( pos ),
             touchedObjects: [],
         };
 
-        for( const poly of level.polys )
-        {
-            for( let i = 0; i <= poly.points.length; ++i )
-            {
-                collideLine( pos, radius, poly.points[i] as vec2, poly.points[(i+1)%poly.points.length] as vec2, result );
+        let bestQ: vec2 = vec2.create();
 
-                if( result.hit )
-                    return result;
+        const p = vec2.clone( pos );
+
+        for( let i = 0 ; i < 10 ; ++i )
+        for( const poly of level.polys )
+            for( let i = 0; i < poly.points.length; ++i )
+            {
+                collideLine( p, radius, poly.points[i] as vec2, poly.points[(i+1)%poly.points.length] as vec2, result, bestQ );
+                vec2.copy( p, result.restoredPos );
             }
+
+        for( const obj of level.objects )
+        {
+            const w =IMAGES[obj.image].width;
+            const h = IMAGES[obj.image].height;
+            const op = vec2.fromValues( obj.pos[0] + w/2, obj.pos[1] + h/2 );
+            const or = (w + h) / 2;
+            if( vec2.squaredDistance( op, pos ) < or*or )
+                result.touchedObjects.push( obj );
         }
 
         return result;
     },
 };
 
-const collideLine = ( p: vec2, radius: number, v: vec2, w: vec2, out: CollisionResult ): void =>
+const collideLine = ( p: vec2, radius: number, v: vec2, w: vec2, out: CollisionResult, bestQ: vec2 ): void =>
 {
     function sqr(x: number) { return x * x }
     function dist2(v: vec2, w: vec2) { return sqr(v[0] - w[0]) + sqr(v[1] - w[1]) }
@@ -99,16 +110,21 @@ const collideLine = ( p: vec2, radius: number, v: vec2, w: vec2, out: CollisionR
         q[1] = v[1] + t * (w[1] - v[1]);
     }
 
-    const d2 = dist2( p, q );
-    if( d2 <= radius * radius )
+    const d2_0 = dist2( p, q );
+    const d2_1 = dist2( p, bestQ );
+
+    if( d2_0 < d2_1 && d2_0 <= radius * radius )
     {
         const a = vec2.sub( vec2.create(), p, q );
         vec2.normalize( a, a );
+        vec2.scale( a, a, radius );
         vec2.add( a, a, q );
 
         out.hit = true;
         out.restoredPos = a;
         out.touchedObjects = [];
+
+        vec2.copy( bestQ, q );
     }
 };
 
@@ -117,7 +133,7 @@ export const drawLevel = ( ctx: CanvasRenderingContext2D, camera: Const<vec2>, l
     if( pass === 0 )
     {
         ctx.clearRect( 0, 0, 1280, 720 );
-        ctx.drawImage( IMAGES['bg__.png'], 0, -camera[1] );
+        ctx.drawImage( IMAGES['bg__.png'], outlines ? -camera[0] : 0, -camera[1] );
 
         if( outlines )
             ctx.strokeStyle = '#ff0';
