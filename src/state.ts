@@ -21,6 +21,7 @@ function lerp(a:number, b:number, percentage:number) {
 export type DiverState =
 {
     gameObject: GameObject,
+    kickAnim: number,
     // extra diver-only state
 };
 
@@ -44,6 +45,7 @@ export const DiverState =
     create(): DiverState
     {
         return {
+            kickAnim: 0,
             gameObject: {
                 position: vec2.create(),
                 velocity: vec2.create(),
@@ -55,8 +57,10 @@ export const DiverState =
         };
     },
 
-    step(self: DiverState, inputs: Const<InputState>, camera: Const<vec2>)
+    step(self: DiverState, inputs: Const<InputState>, camera: Const<vec2>, tick: number)
     {
+        self.gameObject.spriteName = 'DiverSprite'+((((self.kickAnim/10)|0)%2)+1)+'.png';
+
         if(self.gameObject.position[0] < (inputs.mousePos[0] + camera[0]) - 16) {
             self.gameObject.velocity[0] = 3;
             self.gameObject.flip = false;
@@ -74,6 +78,7 @@ export const DiverState =
                 self.gameObject.velocity[1] -= 0.1;
         }
         else {
+            self.kickAnim++;
             if(self.gameObject.velocity[1] < 3)
                 self.gameObject.velocity[1] += 0.1;
         }
@@ -160,7 +165,7 @@ export const GameState =
             self.cameraPos[0] = 1110;
 
         console.log(self.cameraPos[0])
-        DiverState.step( self.diver, inputs, self.cameraPos );
+        DiverState.step( self.diver, inputs, self.cameraPos, self.tick );
         BoatState.step( self.boat, inputs );
     }
 };
