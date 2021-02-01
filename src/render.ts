@@ -1,4 +1,5 @@
 import { IMAGES } from "./images";
+import { drawLevel } from "./levels";
 import { GameState, GameObject } from "./state";
 import { Const } from './utils';
 
@@ -16,9 +17,13 @@ export const render = ( state: Const<GameState> ): void =>
     ctx.fillStyle = "Blue"
     ctx.fillRect(0, 0, 1280, 720);
 
+    drawLevel( ctx, state.cameraPos, state.level, false, 0 );
+
     // render the game objects in specific order
     renderGameObject( state.diver.gameObject );
     renderGameObject( state.boat.gameObject );
+
+    drawLevel( ctx, state.cameraPos, state.level, false, 1 );
 };
 
 // Here we draw each game object to the canvas

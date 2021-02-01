@@ -1,6 +1,6 @@
 import { vec2 } from 'gl-matrix';
 import { InputState } from './inputs';
-import { LevelDef } from './levels';
+import { LevelDef, THE_LEVEL } from './levels';
 import { SOUNDS } from './sounds';
 import { Const } from './utils';
 
@@ -33,6 +33,7 @@ export type BoatState =
 export type GameState =
 {
     tick: number,
+    cameraPos: vec2,
     level: LevelDef,
     boat: BoatState,
     diver: DiverState
@@ -128,7 +129,8 @@ export const GameState =
     {
         return {
             tick: 0,
-            level: LevelDef.create(),
+            cameraPos: vec2.create(),
+            level: LevelDef.load( THE_LEVEL ),
             diver: DiverState.create(),
             boat: BoatState.create()
         };
@@ -141,6 +143,8 @@ export const GameState =
 
         if( self.tick === 1 )
             SOUNDS['music.mp3'].play();
+
+        self.cameraPos[1] += 2;
 
         DiverState.step( self.diver, inputs );
         BoatState.step( self.boat, inputs );
