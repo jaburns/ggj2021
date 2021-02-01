@@ -49,7 +49,7 @@ export const DiverState =
             kickAnim: 0,
             oxygen: 100.0,
             gameObject: {
-                position: vec2.create(),
+                position: vec2.fromValues(100,0),
                 velocity: vec2.create(),
                 rotation: 0,
                 scale: 0.15,
