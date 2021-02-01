@@ -172,10 +172,19 @@ export const drawLevel = ( ctx: CanvasRenderingContext2D, camera: Const<vec2>, l
         ctx.drawImage( IMAGES['WaterOverlay.png'], outlines ? -camera[0] : 0, -camera[1] );
         ctx.drawImage( IMAGES['WavesWaterTop.png'], outlines ? -camera[0] : 0, -camera[1] );
 
-        if(camera[1] > 500)
+        if(camera[1] > 700)
         {
-            ctx.drawImage(IMAGES['beam.png'], 100, 400);
-
+            for(let i=0; i < 20; i++) {
+                ctx.save();
+                let alpha = 0.1 * (Math.sin((performance.now() * Math.sqrt(i) ) / 400.0) + 1) / 2;
+                alpha = alpha * Math.min(Math.max((camera[1]-700.0) / 300.0, 0.0), 1.0);
+                //console.log(alpha)
+                ctx.globalAlpha = alpha;
+                //ctx.rotate(0.2 + i)
+                ctx.drawImage(IMAGES['beam.png'], (Math.sin(performance.now() / (50000.0 + i*19))) * 1600 + (((i-20) * 17837) % 1600), -50);
+                //ctx.globalAlpha = 1;
+                ctx.restore();
+            }
         }
     }
 

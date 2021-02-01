@@ -53,7 +53,9 @@ const renderGameObject = ( go: Const<GameObject>, camera: Const<vec2>): void =>
         go.position[1] - camera[1]
     );
 
+
     ctx.drawImage(sprite, -cx, -cy, sprite.width, sprite.height);
+
     // Important to restore the transform matrix before leaving.
     // Kind of like push and pop in opengl
     ctx.setTransform(1, 0, 0, 1, 0, 0);
